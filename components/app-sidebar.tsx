@@ -2,12 +2,12 @@
 
 import * as React from "react"
 import {
-  IconDashboard,
-  IconHelp,
-  IconInnerShadowTop,
-  IconSearch,
-  IconSettings,
-} from "@tabler/icons-react"
+  LayoutDashboard,
+  HelpCircle,
+  Layers,
+  Search,
+  Settings,
+} from "lucide-react"
 import Link from "next/link"
 import { useSession } from "next-auth/react"
 
@@ -31,7 +31,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     {
       title: "Dashboard",
       url: "/dashboard",
-      icon: IconDashboard,
+      icon: LayoutDashboard,
     },
   ]
 
@@ -39,17 +39,17 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     {
       title: "Settings",
       url: "/dashboard/settings",
-      icon: IconSettings,
+      icon: Settings,
     },
     {
       title: "Get Help",
       url: "/dashboard/help",
-      icon: IconHelp,
+      icon: HelpCircle,
     },
     {
       title: "Search",
       url: "#",
-      icon: IconSearch,
+      icon: Search,
     },
   ]
 
@@ -71,7 +71,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
               <Link href="/dashboard">
-                <IconInnerShadowTop className="!size-5" />
+                <Layers className="!size-5" />
                 <span className="text-base font-semibold">Qalisa</span>
               </Link>
             </SidebarMenuButton>

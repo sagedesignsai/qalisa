@@ -2,11 +2,11 @@
 
 import * as React from "react"
 import {
-  IconArrowDown,
-  IconArrowUp,
-  IconSearch,
-  IconSelector,
-} from "@tabler/icons-react"
+  ChevronDown,
+  ChevronUp,
+  Search,
+  ArrowUpDown,
+} from "lucide-react"
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import {
@@ -173,13 +173,13 @@ export function DataTable({
 
     if (sortState?.column === column) {
       return sortState.direction === "asc" ? (
-        <IconArrowUp className="ml-1 h-4 w-4" />
+        <ChevronUp className="ml-1 h-4 w-4" />
       ) : (
-        <IconArrowDown className="ml-1 h-4 w-4" />
+        <ChevronDown className="ml-1 h-4 w-4" />
       )
     }
 
-    return <IconSelector className="ml-1 h-4 w-4 opacity-50" />
+    return <ArrowUpDown className="ml-1 h-4 w-4 opacity-50" />
   }
 
   return (
@@ -194,7 +194,7 @@ export function DataTable({
           </div>
           {enableSearch && (
             <div className="relative w-full max-w-sm">
-              <IconSearch className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input
                 placeholder="Search items..."
                 value={searchQuery}

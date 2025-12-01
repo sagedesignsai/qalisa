@@ -2,12 +2,12 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import {
-  IconFileText,
-  IconSparkles,
-  IconChartBar,
-  IconArrowRight,
-  IconCheck,
-} from "@tabler/icons-react"
+  FileText,
+  Sparkles,
+  BarChart3,
+  ArrowRight,
+  Check,
+} from "lucide-react"
 
 export default function Home() {
   return (
@@ -26,7 +26,7 @@ export default function Home() {
             <Button asChild size="lg">
               <Link href="/register">
                 Get Started Free
-                <IconArrowRight className="ml-2 h-4 w-4" />
+                <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>
             <Button asChild variant="outline" size="lg">
@@ -50,7 +50,7 @@ export default function Home() {
         <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-8 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-3">
           <Card>
             <CardHeader>
-              <IconSparkles className="h-10 w-10 text-primary mb-4" />
+              <Sparkles className="h-10 w-10 text-primary mb-4" />
               <CardTitle>AI Chat</CardTitle>
               <CardDescription>
                 Engage in intelligent conversations with advanced AI models. Get context-aware
@@ -61,7 +61,7 @@ export default function Home() {
 
           <Card>
             <CardHeader>
-              <IconChartBar className="h-10 w-10 text-primary mb-4" />
+              <BarChart3 className="h-10 w-10 text-primary mb-4" />
               <CardTitle>Analytics Dashboard</CardTitle>
               <CardDescription>
                 Track and visualize your data with interactive charts and comprehensive
@@ -72,7 +72,7 @@ export default function Home() {
 
           <Card>
             <CardHeader>
-              <IconFileText className="h-10 w-10 text-primary mb-4" />
+              <FileText className="h-10 w-10 text-primary mb-4" />
               <CardTitle>Customizable</CardTitle>
               <CardDescription>
                 Build your own features and workflows. Extend the platform with custom
@@ -94,7 +94,7 @@ export default function Home() {
 
           <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-8 lg:mx-0 lg:max-w-none lg:grid-cols-2">
             <div className="flex gap-4">
-              <IconCheck className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
+              <Check className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
               <div>
                 <h3 className="text-lg font-semibold">AI-Powered</h3>
                 <p className="text-muted-foreground">
@@ -104,7 +104,7 @@ export default function Home() {
             </div>
 
             <div className="flex gap-4">
-              <IconCheck className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
+              <Check className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
               <div>
                 <h3 className="text-lg font-semibold">Easy to Use</h3>
                 <p className="text-muted-foreground">
@@ -114,7 +114,7 @@ export default function Home() {
             </div>
 
             <div className="flex gap-4">
-              <IconCheck className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
+              <Check className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
               <div>
                 <h3 className="text-lg font-semibold">Extensible</h3>
                 <p className="text-muted-foreground">
@@ -124,7 +124,7 @@ export default function Home() {
             </div>
 
             <div className="flex gap-4">
-              <IconCheck className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
+              <Check className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
               <div>
                 <h3 className="text-lg font-semibold">Open Source</h3>
                 <p className="text-muted-foreground">
@@ -149,7 +149,7 @@ export default function Home() {
             <Button asChild size="lg">
               <Link href="/register">
                 Get Started Free
-                <IconArrowRight className="ml-2 h-4 w-4" />
+                <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>
           </div>

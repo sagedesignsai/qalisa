@@ -2,11 +2,11 @@
 
 import * as React from "react"
 import {
-  IconCheck,
-  IconClock,
-  IconProgress,
-  IconTrendingUp,
-} from "@tabler/icons-react"
+  Check,
+  Clock,
+  TrendingUp,
+  Activity,
+} from "lucide-react"
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { useDashboardData } from "./hooks/use-dashboard-data"
@@ -41,28 +41,28 @@ export function SectionCards({ className, data }: SectionCardsProps) {
       title: "Total Items",
       value: stats.total.toLocaleString(),
       description: "All dashboard items",
-      icon: IconTrendingUp,
+      icon: TrendingUp,
       className: "text-blue-600 dark:text-blue-400",
     },
     {
       title: "Completed",
       value: stats.done.toLocaleString(),
       description: "Items marked as done",
-      icon: IconCheck,
+      icon: Check,
       className: "text-green-600 dark:text-green-400",
     },
     {
       title: "In Progress",
       value: stats.inProcess.toLocaleString(),
       description: "Items currently in process",
-      icon: IconClock,
+      icon: Clock,
       className: "text-orange-600 dark:text-orange-400",
     },
     {
       title: "Completion Rate",
       value: `${stats.completionRate}%`,
       description: "Percentage completed",
-      icon: IconProgress,
+      icon: Activity,
       className: "text-purple-600 dark:text-purple-400",
     },
   ]

@@ -1,5 +1,5 @@
 import type { UIMessage, UIMessagePart } from 'ai';
-import type { Message, Chat } from '@/lib/generated/prisma';
+import type { MessageModel as Message, ChatModel as Chat } from '@/lib/generated/prisma/models';
 
 /**
  * Convert database Message to UIMessage format

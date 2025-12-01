@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
-import { IconSparkles, IconArrowRight } from "@tabler/icons-react"
+import { Sparkles, ArrowRight } from "lucide-react"
 
 export default function RegisterPage() {
   async function handleRegister(formData: FormData) {
@@ -64,7 +64,7 @@ export default function RegisterPage() {
         <div className="max-w-md mx-auto space-y-6">
           <div className="flex items-center gap-3">
             <div className="flex items-center justify-center w-12 h-12 rounded-lg bg-primary text-primary-foreground">
-              <IconSparkles className="h-6 w-6" />
+              <Sparkles className="h-6 w-6" />
             </div>
             <h1 className="text-2xl font-bold">Qalisa</h1>
           </div>
@@ -149,7 +149,7 @@ export default function RegisterPage() {
                 </div>
                 <Button type="submit" className="w-full" size="lg">
                   Create account
-                  <IconArrowRight className="ml-2 h-4 w-4" />
+                  <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </form>
 
