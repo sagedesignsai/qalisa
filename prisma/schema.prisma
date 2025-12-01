@@ -23,9 +23,10 @@ model User {
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
 
-  accounts Account[]
-  sessions Session[]
-  chats    Chat[]
+  accounts  Account[]
+  sessions  Session[]
+  chats     Chat[]
+  workflows Workflow[]
 
   @@map("users")
 }
@@ -121,4 +122,75 @@ enum MessageRole {
   ASSISTANT
   SYSTEM
   TOOL
+}
+
+// Workflow System
+model Workflow {
+  id          String         @id @default(cuid())
+  userId      String
+  user        User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name        String
+  description String?
+  type        WorkflowType   @default(AGENT)
+  status      WorkflowStatus @default(DRAFT)
+  config      Json? // Workflow-level configuration
+  metadata    Json? // Additional metadata
+  nodes       WorkflowNode[]
+  edges       WorkflowEdge[]
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  @@index([userId, createdAt])
+  @@index([userId, status])
+  @@map("workflows")
+}
+
+model WorkflowNode {
+  id         String   @id @default(cuid())
+  workflowId String
+  workflow   Workflow @relation(fields: [workflowId], references: [id], onDelete: Cascade)
+  nodeId     String // React Flow node ID
+  type       String // Node type (agent, tool, condition, etc.)
+  position   Json // { x: number, y: number }
+  data       Json // Node data/config
+  metadata   Json? // Additional node metadata
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([workflowId, nodeId])
+  @@index([workflowId])
+  @@map("workflow_nodes")
+}
+
+model WorkflowEdge {
+  id         String   @id @default(cuid())
+  workflowId String
+  workflow   Workflow @relation(fields: [workflowId], references: [id], onDelete: Cascade)
+  edgeId     String // React Flow edge ID
+  source     String // Source node ID
+  target     String // Target node ID
+  type       String? // Edge type (animated, temporary, etc.)
+  data       Json? // Edge data/config
+  metadata   Json? // Additional edge metadata
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([workflowId, edgeId])
+  @@index([workflowId])
+  @@index([workflowId, source, target])
+  @@map("workflow_edges")
+}
+
+enum WorkflowType {
+  AGENT
+  AUTOMATION
+  DATA_PROCESSING
+  CUSTOM
+}
+
+enum WorkflowStatus {
+  DRAFT
+  ACTIVE
+  ARCHIVED
+  DELETED
 }
