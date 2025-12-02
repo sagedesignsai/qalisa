@@ -22,6 +22,8 @@ export interface UpdateProjectInput {
   chatId?: string | null;
   metadata?: Record<string, unknown>;
   settings?: Record<string, unknown>;
+  remotionConfig?: Record<string, unknown>;
+  agentVersion?: string;
 }
 
 /**
@@ -180,6 +182,8 @@ export async function updateProject(
     chatId?: string | null;
     metadata?: Record<string, unknown> | null;
     settings?: Record<string, unknown> | null;
+    remotionConfig?: Record<string, unknown> | null;
+    agentVersion?: string | null;
   } = {};
 
   // Copy non-chatId fields (only include if they're explicitly provided in input)
@@ -197,6 +201,12 @@ export async function updateProject(
   }
   if ('settings' in input && input.settings !== undefined) {
     updateData.settings = input.settings;
+  }
+  if ('remotionConfig' in input && input.remotionConfig !== undefined) {
+    updateData.remotionConfig = input.remotionConfig;
+  }
+  if ('agentVersion' in input && input.agentVersion !== undefined) {
+    updateData.agentVersion = input.agentVersion;
   }
 
   // Handle chatId validation
@@ -292,6 +302,7 @@ export async function createVideoTrack(
     volume?: number;
     order: number;
     metadata?: Record<string, unknown>;
+    remotionMetadata?: Record<string, unknown>;
   }
 ): Promise<VideoTrack> {
   return prisma.videoTrack.create({
