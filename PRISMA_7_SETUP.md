@@ -159,3 +159,4 @@ pnpm prisma db seed
 - [Prisma Config Reference](https://www.prisma.io/docs/orm/reference/prisma-config-reference)
 - [Prisma 7 Migration Guide](https://www.prisma.io/docs/orm/more/releases)
 
+

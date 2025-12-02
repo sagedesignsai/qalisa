@@ -13,7 +13,10 @@ export default function DashboardPage() {
       <div className="px-4 lg:px-6">
         <ChartAreaInteractive data={data} />
       </div>
-      <DataTable data={data} />
+
+      <div className="px-4 lg:px-6">
+        <DataTable data={data} />
+      </div>
     </div>
   )
 }

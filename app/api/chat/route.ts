@@ -1,5 +1,5 @@
 import { auth } from '@/lib/auth';
-import { streamText, convertToModelMessages, type UIMessage } from 'ai';
+import { streamText, convertToModelMessages, type UIMessage, type ToolSet } from 'ai';
 import { createModel, defaultProviderOptions, google } from '@/lib/ai/config';
 import {
   createChat,
@@ -85,8 +85,8 @@ export async function POST(req: Request) {
     );
 
     // Configure tools based on options
-    const tools: Record<string, unknown> = {};
-    
+    const tools: Partial<ToolSet> = {};
+
     // Add Google Search if webSearch is enabled
     if (webSearch) {
       tools.google_search = google.tools.googleSearch({});
@@ -97,12 +97,12 @@ export async function POST(req: Request) {
       model: createModel(model),
       messages: modelMessages,
       system: 'You are a helpful assistant that can answer questions and help with tasks',
-      ...(Object.keys(tools).length > 0 && { tools }),
+      ...(Object.keys(tools).length > 0 && { tools: tools as ToolSet }),
       ...defaultProviderOptions,
     });
 
     // Store stream ID for potential resumption
-    const streamId = result.streamId;
+    const streamId = (result as { streamId?: string }).streamId;
     if (streamId) {
       await updateChatStreamId(currentChatId, streamId);
     }
@@ -111,19 +111,21 @@ export async function POST(req: Request) {
     const stream = result.toUIMessageStreamResponse({
       sendReasoning: true,
       sendSources: true,
-      async onFinish(message) {
+      async onFinish(options) {
+        const responseMessage = options.responseMessage;
         // Mark message as complete
         await updateMessage(savedAssistantMessage.id, {
-          content: message.parts,
-          metadata: message.metadata as Record<string, unknown>,
+          content: responseMessage.parts,
+          metadata: responseMessage.metadata as Record<string, unknown>,
           isComplete: true,
         });
 
         // Update chat title if needed (from first assistant response)
-        if (!message.metadata?.titleGenerated) {
+        const metadata = responseMessage.metadata as Record<string, unknown> | undefined;
+        if (!metadata?.titleGenerated) {
           const chat = await getChatById(currentChatId!, userId);
           if (chat && !chat.title) {
-            const text = extractTextFromParts(message.parts);
+            const text = extractTextFromParts(responseMessage.parts);
             if (text) {
               const title = text.substring(0, 50).trim();
               await updateChatTitle(currentChatId!, title);
