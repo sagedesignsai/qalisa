@@ -46,19 +46,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       url: "/dashboard/help",
       icon: HelpCircle,
     },
-    {
-      title: "Search",
-      url: "#",
-      icon: Search,
-    },
   ]
 
   const user = session?.user
     ? {
-        name: session.user.name || "User",
-        email: session.user.email || "",
-        avatar: session.user.image || undefined,
-      }
+      name: session.user.name || "User",
+      email: session.user.email || "",
+      avatar: session.user.image ?? undefined,
+    }
     : null
 
   return (
@@ -68,10 +63,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenuItem>
             <SidebarMenuButton
               asChild
-              className="data-[slot=sidebar-menu-button]:!p-1.5"
+              className="data-[slot=sidebar-menu-button]:p-1.5!"
             >
               <Link href="/dashboard">
-                <Layers className="!size-5" />
+                <Layers className="size-5!" />
                 <span className="text-base font-semibold">Qalisa</span>
               </Link>
             </SidebarMenuButton>

@@ -21,11 +21,11 @@ export default function DashboardLayout({
         } as React.CSSProperties
       }
     >
-      <AppSidebar variant="inset" />
+      <AppSidebar variant="inset" collapsible="icon" />
       <SidebarInset>
         <SiteHeader />
-        <div className="flex flex-1 flex-col">
-          <div className="@container/main flex flex-1 flex-col gap-2">
+        <div className="flex flex-1 flex-col overflow-auto">
+          <div className="@container/main flex flex-1 flex-col p-4 md:p-6 lg:p-8">
             {children}
           </div>
         </div>

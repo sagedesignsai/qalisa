@@ -187,6 +187,27 @@ qalisa/
 
    # AI Gateway (Optional but recommended)
    AI_GATEWAY_API_KEY="your-ai-gateway-api-key"
+
+   # PayFast Payment Gateway (Required for payments)
+   PAYFAST_MERCHANT_ID="your-payfast-merchant-id"
+   PAYFAST_MERCHANT_KEY="your-payfast-merchant-key"
+   PAYFAST_PASSPHRASE="your-payfast-passphrase" # Optional, but recommended
+   PAYFAST_SANDBOX="true" # Set to "false" for production
+
+   # Polar.sh Payment Gateway (Alternative payment provider)
+   POLAR_ACCESS_TOKEN="your-polar-access-token"
+   POLAR_WEBHOOK_SECRET="your-polar-webhook-secret"
+   POLAR_SANDBOX="true" # Set to "false" for production
+   POLAR_ORGANIZATION_ID="your-polar-organization-id"
+   # Polar Product/Price IDs (configure in Polar dashboard)
+   POLAR_PRODUCT_STARTER_ID="prod_xxx"
+   POLAR_PRICE_STARTER_MONTHLY_ID="price_xxx"
+   POLAR_PRICE_STARTER_YEARLY_ID="price_xxx"
+   POLAR_PRODUCT_PROFESSIONAL_ID="prod_xxx"
+   POLAR_PRICE_PROFESSIONAL_MONTHLY_ID="price_xxx"
+   POLAR_PRICE_PROFESSIONAL_YEARLY_ID="price_xxx"
+
+   NEXT_PUBLIC_APP_URL="http://localhost:3028" # Your app URL for webhooks
    ```
 
 4. **Set up the database**
@@ -405,6 +426,11 @@ Ensure all environment variables are set in your deployment platform:
 - `GOOGLE_GENERATIVE_AI_API_KEY`
 - `GOOGLE_CLIENT_ID` (if using Google OAuth)
 - `GOOGLE_CLIENT_SECRET` (if using Google OAuth)
+- `PAYFAST_MERCHANT_ID` (if using payments)
+- `PAYFAST_MERCHANT_KEY` (if using payments)
+- `PAYFAST_PASSPHRASE` (if using payments, recommended)
+- `PAYFAST_SANDBOX` (set to "false" for production)
+- `NEXT_PUBLIC_APP_URL` (your production URL for webhooks)
 
 ## 📖 Documentation
 

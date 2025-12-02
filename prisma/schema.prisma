@@ -23,9 +23,11 @@ model User {
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
 
-  accounts Account[]
-  sessions Session[]
-  chats    Chat[]
+  accounts      Account[]
+  sessions      Session[]
+  chats         Chat[]
+  subscriptions UserSubscription[]
+  payments      Payment[]
 
   @@map("users")
 }
@@ -74,6 +76,98 @@ enum Subscription {
   STARTER
   PROFESSIONAL
   ENTERPRISE
+}
+
+enum PaymentStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+  CANCELLED
+  REFUNDED
+}
+
+enum PaymentMethod {
+  CARD
+  EFT
+  PAYPAL
+  BANK_TRANSFER
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELLED
+  EXPIRED
+  SUSPENDED
+  PENDING
+}
+
+// Payment & Subscription Models
+model UserSubscription {
+  id                String            @id @default(cuid())
+  userId            String
+  user              User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  plan              Subscription
+  status            SubscriptionStatus @default(PENDING)
+  payfastToken      String?           @unique // PayFast subscription token
+  payfastProfileId  String?           @unique // PayFast subscription profile ID
+  currentPeriodStart DateTime?
+  currentPeriodEnd   DateTime?
+  cancelAtPeriodEnd  Boolean          @default(false)
+  cancelledAt        DateTime?
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+
+  payments Payment[]
+
+  @@index([userId])
+  @@index([status])
+  @@index([payfastToken])
+  @@map("user_subscriptions")
+}
+
+model Payment {
+  id                String        @id @default(cuid())
+  userId            String
+  user              User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subscriptionId    String?
+  subscription      UserSubscription? @relation(fields: [subscriptionId], references: [id], onDelete: SetNull)
+  amount            Float         // Amount in ZAR (cents)
+  currency          String        @default("ZAR")
+  status            PaymentStatus @default(PENDING)
+  paymentMethod     PaymentMethod
+  payfastPaymentId  String?       @unique // PayFast payment ID
+  payfastMerchantId String?       // PayFast merchant order ID
+  description       String?
+  metadata          Json?         // Additional payment data
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+
+  transactions Transaction[]
+
+  @@index([userId])
+  @@index([status])
+  @@index([payfastPaymentId])
+  @@index([subscriptionId])
+  @@map("payments")
+}
+
+model Transaction {
+  id            String   @id @default(cuid())
+  paymentId     String
+  payment       Payment  @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+  type          String   // payment, refund, subscription_update, etc.
+  amount        Float    // Amount in ZAR (cents)
+  currency      String   @default("ZAR")
+  status        String   // success, failed, pending
+  payfastData   Json?    // Raw PayFast webhook data
+  description   String?
+  createdAt     DateTime @default(now())
+
+  @@index([paymentId])
+  @@index([type])
+  @@index([status])
+  @@map("transactions")
 }
 
 // AI Chat & Messages

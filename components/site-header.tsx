@@ -7,7 +7,12 @@ import { SidebarTrigger } from "@/components/ui/sidebar"
 const getPageTitle = (pathname: string | null): string => {
   if (!pathname) return "Dashboard"
   if (pathname === "/dashboard") return "Dashboard"
+  if (pathname.startsWith("/dashboard/account")) return "Account Settings"
+  if (pathname.startsWith("/dashboard/billing")) return "Billing & Subscription"
+  if (pathname.startsWith("/dashboard/notifications")) return "Notifications"
+  if (pathname.startsWith("/dashboard/security")) return "Security"
   if (pathname.startsWith("/dashboard/settings")) return "Settings"
+  if (pathname.startsWith("/dashboard/help")) return "Get Help"
   return "Dashboard"
 }
 
