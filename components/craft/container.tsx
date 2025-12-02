@@ -1,12 +1,12 @@
 /**
  * Container Component
- * A draggable container component with droppable Canvas area
+ * Following Craft.js tutorial pattern
+ * When used with <Element canvas is={Container}>, the Element itself is the droppable region
+ * Container just renders its children directly
  */
 
 'use client';
 
-import { useNode } from '@craftjs/core';
-import { Canvas } from '@craftjs/core';
 import React from 'react';
 
 export interface ContainerProps {
@@ -16,32 +16,18 @@ export interface ContainerProps {
 }
 
 export const Container = ({ padding = 0, background, children }: ContainerProps) => {
-  const {
-    connectors: { connect, drag },
-  } = useNode();
-
   return (
     <div
-      ref={(ref) => connect(drag(ref))}
+      className="w-full min-h-[400px]"
       style={{
         padding: `${padding}px`,
         background: background || 'transparent',
-        minHeight: '50px',
+        minHeight: '400px',
+        width: '100%',
       }}
     >
-      <Canvas id="container-canvas">{children}</Canvas>
+      {children}
     </div>
   );
-};
-
-Container.craft = {
-  props: {
-    padding: 0,
-    background: 'transparent',
-  },
-  rules: {
-    canMoveIn: () => true,
-  },
-  displayName: 'Container',
 };
 

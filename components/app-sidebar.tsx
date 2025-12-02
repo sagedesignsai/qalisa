@@ -7,6 +7,7 @@ import {
   Layers,
   Search,
   Settings,
+  Code,
 } from "lucide-react"
 import Link from "next/link"
 import { useSession } from "next-auth/react"
@@ -32,6 +33,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       title: "Dashboard",
       url: "/dashboard",
       icon: LayoutDashboard,
+    },
+    {
+      title: "Editor",
+      url: "/editor",
+      icon: Code,
     },
   ]
 

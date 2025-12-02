@@ -8,10 +8,12 @@ import {
   ArrowRight,
   Check,
 } from "lucide-react"
+import { MarketingHeader } from "@/components/marketing/marketing-header"
 
 export default function Home() {
   return (
     <div className="flex min-h-screen flex-col">
+      <MarketingHeader />
       {/* Hero Section */}
       <section className="container mx-auto px-4 py-16 md:py-24">
         <div className="mx-auto max-w-3xl text-center">
@@ -37,7 +39,7 @@ export default function Home() {
       </section>
 
       {/* Features Section */}
-      <section className="container mx-auto px-4 py-16">
+      <section id="features" className="container mx-auto px-4 py-16">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
             Powerful AI Capabilities
@@ -84,7 +86,7 @@ export default function Home() {
       </section>
 
       {/* Benefits Section */}
-      <section className="bg-muted py-16">
+      <section id="pricing" className="bg-muted py-16">
         <div className="container mx-auto px-4">
           <div className="mx-auto max-w-2xl text-center">
             <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">

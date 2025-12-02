@@ -5,7 +5,6 @@
 
 'use client';
 
-import { useNode } from '@craftjs/core';
 import { Button as UIButton } from '@/components/ui/button';
 import React from 'react';
 
@@ -16,25 +15,12 @@ export interface ButtonProps {
 }
 
 export const Button = ({ text = 'Button', variant = 'default', size = 'default' }: ButtonProps) => {
-  const {
-    connectors: { connect, drag },
-  } = useNode();
-
   return (
-    <div ref={(ref) => connect(drag(ref))}>
+    <div>
       <UIButton variant={variant} size={size}>
         {text}
       </UIButton>
     </div>
   );
-};
-
-Button.craft = {
-  props: {
-    text: 'Button',
-    variant: 'default',
-    size: 'default',
-  },
-  displayName: 'Button',
 };
 

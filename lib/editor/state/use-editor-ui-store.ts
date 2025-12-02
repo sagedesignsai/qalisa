@@ -1,11 +1,26 @@
 /**
  * Editor UI Store
- * Manages editor UI state: panels, canvas, selection
+ * Manages editor UI state: panels, canvas, selection.
+ * Store logic updated to align with panel constraints and API
+ * used in @components/editor/layout/editor-layout.tsx.
  */
 
 import { create } from 'zustand';
-import type { EditorUIState, PanelState, CanvasState, SelectionState, ViewportSize } from '../types/editor.types';
+import type {
+  EditorUIState,
+  PanelState,
+  CanvasState,
+  SelectionState,
+  ViewportSize,
+} from '../types/editor.types';
 
+// Panel size constraints - smaller defaults to prioritize canvas
+export const LEFT_SIDEBAR_MIN = 200;
+export const LEFT_SIDEBAR_MAX = 350;
+export const RIGHT_SIDEBAR_MIN = 240;
+export const RIGHT_SIDEBAR_MAX = 400;
+
+// Default viewport values (unchanged)
 const DEFAULT_VIEWPORT: ViewportSize = {
   width: 1440,
   height: 900,
@@ -15,12 +30,12 @@ const DEFAULT_VIEWPORT: ViewportSize = {
 const DEFAULT_PANELS: PanelState = {
   leftSidebar: {
     open: true,
-    width: 280,
+    width: 240, // Smaller default - prioritizes canvas
     activeTab: 'build',
   },
   rightSidebar: {
     open: true,
-    width: 320,
+    width: 280, // Smaller default - prioritizes canvas
     activeTab: 'properties',
   },
 };
@@ -41,9 +56,8 @@ interface EditorUIStore extends EditorUIState {
   // Panel actions
   toggleLeftSidebar: () => void;
   toggleRightSidebar: () => void;
-  setLeftSidebarWidth: (width: number) => void;
-  setRightSidebarWidth: (width: number) => void;
-  setLeftSidebarTab: (tab: 'build' | 'connect') => void;
+  setPanelWidth: (panel: 'leftSidebar' | 'rightSidebar', width: number) => void;
+  setLeftSidebarTab: (tab: 'build' | 'connect' | 'layers') => void;
   setRightSidebarTab: (tab: 'properties' | 'settings') => void;
 
   // Canvas actions
@@ -89,27 +103,33 @@ export const useEditorUIStore = create<EditorUIStore>((set) => ({
       },
     })),
 
-  setLeftSidebarWidth: (width) =>
-    set((state) => ({
-      panels: {
-        ...state.panels,
-        leftSidebar: {
-          ...state.panels.leftSidebar,
-          width: Math.max(200, Math.min(500, width)),
-        },
-      },
-    })),
-
-  setRightSidebarWidth: (width) =>
-    set((state) => ({
-      panels: {
-        ...state.panels,
-        rightSidebar: {
-          ...state.panels.rightSidebar,
-          width: Math.max(200, Math.min(500, width)),
-        },
-      },
-    })),
+  // Unified width setter, matches API in @components/editor/layout/editor-layout.tsx
+  setPanelWidth: (panel, width) =>
+    set((state) => {
+      if (panel === 'leftSidebar') {
+        return {
+          panels: {
+            ...state.panels,
+            leftSidebar: {
+              ...state.panels.leftSidebar,
+              width: Math.max(LEFT_SIDEBAR_MIN, Math.min(LEFT_SIDEBAR_MAX, width)),
+            },
+          },
+        };
+      }
+      if (panel === 'rightSidebar') {
+        return {
+          panels: {
+            ...state.panels,
+            rightSidebar: {
+              ...state.panels.rightSidebar,
+              width: Math.max(RIGHT_SIDEBAR_MIN, Math.min(RIGHT_SIDEBAR_MAX, width)),
+            },
+          },
+        };
+      }
+      return {};
+    }),
 
   setLeftSidebarTab: (tab) =>
     set((state) => ({

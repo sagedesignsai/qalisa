@@ -5,40 +5,22 @@
 
 import { Reka } from '@rekajs/core';
 import * as t from '@rekajs/types';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
 
 export const createRekaInstance = () => {
+  // Create a minimal Reka instance without externals for now
+  // External components can be added later when we properly integrate RekaJS rendering
+  // 
+  // IMPORTANT: According to RekaExternalsFactory type:
+  // - functions: Must be a factory function (reka: Reka) => StateExternalFunctions
+  // - components: Array of Component types
+  // - states: Array of ExternalState types
   return Reka.create({
     externals: {
-      functions: [
-        // Add external functions here
-        // Example:
-        // t.externalFunc({
-        //   name: 'formatDate',
-        //   func: (date: Date) => date.toLocaleDateString(),
-        // }),
-      ],
-      components: [
-        // Add external React components here
-        t.externalComponent({
-          name: 'Button',
-          component: Button as any,
-        }),
-        t.externalComponent({
-          name: 'Input',
-          component: Input as any,
-        }),
-        t.externalComponent({
-          name: 'Textarea',
-          component: Textarea as any,
-        }),
-      ],
+      functions: () => [], // Factory function that receives Reka instance and returns functions array
+      components: [], // Array of external components (t.Component[])
+      states: [], // Array of external states (t.ExternalState[])
     },
-    extensions: [
-      // Add extensions here
-    ],
+    extensions: [],
   });
 };
 

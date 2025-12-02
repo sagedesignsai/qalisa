@@ -33,19 +33,19 @@ export function NavSecondary({
             const isActive = pathname === item.url || pathname?.startsWith(item.url + "/")
             return (
               <SidebarMenuItem key={item.title}>
-                <SidebarMenuButton tooltip={item.title} asChild isActive={isActive}>
-                  {item.url === "#" ? (
-                    <>
-                      {item.icon && <item.icon />}
-                      <span>{item.title}</span>
-                    </>
-                  ) : (
+                {item.url === "#" ? (
+                  <SidebarMenuButton tooltip={item.title} isActive={isActive}>
+                    {item.icon && <item.icon />}
+                    <span>{item.title}</span>
+                  </SidebarMenuButton>
+                ) : (
+                  <SidebarMenuButton tooltip={item.title} asChild isActive={isActive}>
                     <Link href={item.url}>
                       {item.icon && <item.icon />}
                       <span>{item.title}</span>
                     </Link>
-                  )}
-                </SidebarMenuButton>
+                  </SidebarMenuButton>
+                )}
               </SidebarMenuItem>
             )
           })}

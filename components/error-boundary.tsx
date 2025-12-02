@@ -62,9 +62,25 @@ class ErrorBoundaryClass extends React.Component<
       this.props.onError(error, errorInfo)
     }
 
-    // Log error to console in development
+    // Enhanced error logging in development
     if (process.env.NODE_ENV === "development") {
-      console.error("ErrorBoundary caught an error:", error, errorInfo)
+      console.group("🚨 ErrorBoundary caught an error")
+      console.error("Error:", error)
+      console.error("Error message:", error.message)
+      console.error("Error stack:", error.stack)
+      console.error("Component stack:", errorInfo.componentStack)
+      console.error("Error info:", errorInfo)
+      
+      // Check if it's a React rendering error
+      if (error.message.includes("Objects are not valid as a React child")) {
+        console.warn("💡 This is likely a rendering issue - check if you're trying to render an object directly")
+        console.warn("💡 Common causes:")
+        console.warn("   - Returning an object from a render function")
+        console.warn("   - Passing an object as children")
+        console.warn("   - Incorrect return value from onRender callback")
+      }
+      
+      console.groupEnd()
     }
   }
 
@@ -132,14 +148,26 @@ function DefaultErrorFallback({
           </Alert>
 
           {process.env.NODE_ENV === "development" && errorInfo && (
-            <details className="rounded-lg border bg-muted/50 p-4">
-              <summary className="cursor-pointer font-medium text-sm mb-2">
-                Stack Trace (Development Only)
-              </summary>
-              <pre className="mt-2 overflow-auto text-xs font-mono text-muted-foreground">
-                {errorInfo.componentStack}
-              </pre>
-            </details>
+            <>
+              <details className="rounded-lg border bg-muted/50 p-4">
+                <summary className="cursor-pointer font-medium text-sm mb-2">
+                  Component Stack (Development Only)
+                </summary>
+                <pre className="mt-2 overflow-auto text-xs font-mono text-muted-foreground max-h-40">
+                  {errorInfo.componentStack}
+                </pre>
+              </details>
+              {error.stack && (
+                <details className="rounded-lg border bg-muted/50 p-4">
+                  <summary className="cursor-pointer font-medium text-sm mb-2">
+                    Error Stack Trace (Development Only)
+                  </summary>
+                  <pre className="mt-2 overflow-auto text-xs font-mono text-muted-foreground max-h-40">
+                    {error.stack}
+                  </pre>
+                </details>
+              )}
+            </>
           )}
         </CardContent>
 

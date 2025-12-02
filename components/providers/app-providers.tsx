@@ -1,6 +1,6 @@
 "use client"
 
-import { ReactNode } from "react"
+import { ReactNode, useEffect, useState } from "react"
 import NextTopLoader from "nextjs-toploader"
 import { useTheme } from "next-themes"
 import { ErrorBoundary } from "@/components/error-boundary"
@@ -129,12 +129,18 @@ export interface AppProvidersProps {
  */
 function TopLoader({ config }: { config: TopLoaderConfig }) {
   const { resolvedTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+  
+  // Prevent hydration mismatch by only using theme after mount
+  useEffect(() => {
+    setMounted(true)
+  }, [])
   
   // Theme-aware default colors based on your design system
   // Light theme: primary color (cyan-blue)
   // Dark theme: primary color (green)
-  // Default to light theme during SSR/hydration
-  const isDark = resolvedTheme === "dark"
+  // Default to light theme during SSR/hydration to match server render
+  const isDark = mounted && resolvedTheme === "dark"
   const defaultColor = config.color || (isDark ? "#4ade80" : "#2299DD")
   const defaultShadow = config.shadow || (
     isDark

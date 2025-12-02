@@ -5,7 +5,6 @@
 
 'use client';
 
-import { useNode } from '@craftjs/core';
 import React from 'react';
 
 export interface TextProps {
@@ -16,13 +15,8 @@ export interface TextProps {
 }
 
 export const Text = ({ text = 'Text', fontSize = 16, color = '#000', align = 'left' }: TextProps) => {
-  const {
-    connectors: { connect, drag },
-  } = useNode();
-
   return (
     <p
-      ref={(ref) => connect(drag(ref))}
       style={{
         fontSize: `${fontSize}px`,
         color,
@@ -34,15 +28,5 @@ export const Text = ({ text = 'Text', fontSize = 16, color = '#000', align = 'le
       {text}
     </p>
   );
-};
-
-Text.craft = {
-  props: {
-    text: 'Text',
-    fontSize: 16,
-    color: '#000',
-    align: 'left',
-  },
-  displayName: 'Text',
 };
 

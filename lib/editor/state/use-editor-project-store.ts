@@ -25,6 +25,7 @@ interface EditorProjectStore extends ProjectState {
   markDirty: () => void;
   markClean: () => void;
   setCraftJson: (json: unknown) => void;
+  clearCraftJson: () => void;
   setRekaJson: (json: unknown) => void;
   resetProject: () => void;
 }
@@ -71,6 +72,12 @@ export const useEditorProjectStore = create<EditorProjectStore>((set) => ({
   setCraftJson: (json) =>
     set({
       craftJson: json,
+      isDirty: true,
+    }),
+
+  clearCraftJson: () =>
+    set({
+      craftJson: null,
       isDirty: true,
     }),
 

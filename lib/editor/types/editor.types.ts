@@ -15,7 +15,7 @@ export type PanelState = {
   leftSidebar: {
     open: boolean;
     width: number;
-    activeTab: 'build' | 'connect';
+    activeTab: 'build' | 'connect' | 'layers';
   };
   rightSidebar: {
     open: boolean;
