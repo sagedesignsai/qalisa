@@ -59,7 +59,14 @@ export const ModelName = {
   Payment: 'Payment',
   Transaction: 'Transaction',
   Chat: 'Chat',
-  Message: 'Message'
+  Message: 'Message',
+  StudioProject: 'StudioProject',
+  MediaAsset: 'MediaAsset',
+  VideoTrack: 'VideoTrack',
+  ProjectExport: 'ProjectExport',
+  ProjectMessage: 'ProjectMessage',
+  ProjectSource: 'ProjectSource',
+  StudioContentItem: 'StudioContentItem'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -209,6 +216,117 @@ export const MessageScalarFieldEnum = {
 } as const
 
 export type MessageScalarFieldEnum = (typeof MessageScalarFieldEnum)[keyof typeof MessageScalarFieldEnum]
+
+
+export const StudioProjectScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  chatId: 'chatId',
+  type: 'type',
+  title: 'title',
+  description: 'description',
+  status: 'status',
+  metadata: 'metadata',
+  settings: 'settings',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type StudioProjectScalarFieldEnum = (typeof StudioProjectScalarFieldEnum)[keyof typeof StudioProjectScalarFieldEnum]
+
+
+export const MediaAssetScalarFieldEnum = {
+  id: 'id',
+  projectId: 'projectId',
+  contentItemId: 'contentItemId',
+  type: 'type',
+  appwriteId: 'appwriteId',
+  url: 'url',
+  mimeType: 'mimeType',
+  size: 'size',
+  duration: 'duration',
+  width: 'width',
+  height: 'height',
+  metadata: 'metadata',
+  createdAt: 'createdAt'
+} as const
+
+export type MediaAssetScalarFieldEnum = (typeof MediaAssetScalarFieldEnum)[keyof typeof MediaAssetScalarFieldEnum]
+
+
+export const VideoTrackScalarFieldEnum = {
+  id: 'id',
+  projectId: 'projectId',
+  assetId: 'assetId',
+  type: 'type',
+  startTime: 'startTime',
+  endTime: 'endTime',
+  volume: 'volume',
+  order: 'order',
+  metadata: 'metadata',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type VideoTrackScalarFieldEnum = (typeof VideoTrackScalarFieldEnum)[keyof typeof VideoTrackScalarFieldEnum]
+
+
+export const ProjectExportScalarFieldEnum = {
+  id: 'id',
+  projectId: 'projectId',
+  format: 'format',
+  quality: 'quality',
+  appwriteId: 'appwriteId',
+  url: 'url',
+  status: 'status',
+  progress: 'progress',
+  error: 'error',
+  metadata: 'metadata',
+  createdAt: 'createdAt',
+  completedAt: 'completedAt'
+} as const
+
+export type ProjectExportScalarFieldEnum = (typeof ProjectExportScalarFieldEnum)[keyof typeof ProjectExportScalarFieldEnum]
+
+
+export const ProjectMessageScalarFieldEnum = {
+  id: 'id',
+  projectId: 'projectId',
+  role: 'role',
+  content: 'content',
+  metadata: 'metadata',
+  sequence: 'sequence',
+  isComplete: 'isComplete',
+  createdAt: 'createdAt'
+} as const
+
+export type ProjectMessageScalarFieldEnum = (typeof ProjectMessageScalarFieldEnum)[keyof typeof ProjectMessageScalarFieldEnum]
+
+
+export const ProjectSourceScalarFieldEnum = {
+  id: 'id',
+  projectId: 'projectId',
+  url: 'url',
+  title: 'title',
+  extractedAt: 'extractedAt'
+} as const
+
+export type ProjectSourceScalarFieldEnum = (typeof ProjectSourceScalarFieldEnum)[keyof typeof ProjectSourceScalarFieldEnum]
+
+
+export const StudioContentItemScalarFieldEnum = {
+  id: 'id',
+  projectId: 'projectId',
+  type: 'type',
+  title: 'title',
+  status: 'status',
+  metadata: 'metadata',
+  data: 'data',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type StudioContentItemScalarFieldEnum = (typeof StudioContentItemScalarFieldEnum)[keyof typeof StudioContentItemScalarFieldEnum]
 
 
 export const SortOrder = {

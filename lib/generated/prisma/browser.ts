@@ -62,3 +62,38 @@ export type Chat = Prisma.ChatModel
  * 
  */
 export type Message = Prisma.MessageModel
+/**
+ * Model StudioProject
+ * 
+ */
+export type StudioProject = Prisma.StudioProjectModel
+/**
+ * Model MediaAsset
+ * 
+ */
+export type MediaAsset = Prisma.MediaAssetModel
+/**
+ * Model VideoTrack
+ * 
+ */
+export type VideoTrack = Prisma.VideoTrackModel
+/**
+ * Model ProjectExport
+ * 
+ */
+export type ProjectExport = Prisma.ProjectExportModel
+/**
+ * Model ProjectMessage
+ * 
+ */
+export type ProjectMessage = Prisma.ProjectMessageModel
+/**
+ * Model ProjectSource
+ * 
+ */
+export type ProjectSource = Prisma.ProjectSourceModel
+/**
+ * Model StudioContentItem
+ * 
+ */
+export type StudioContentItem = Prisma.StudioContentItemModel

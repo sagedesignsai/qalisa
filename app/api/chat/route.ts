@@ -42,7 +42,8 @@ export async function POST(req: Request) {
     }
 
     // Get or create chat
-    let currentChatId = chatId;
+    // Treat empty strings as undefined
+    let currentChatId = chatId && chatId.trim() ? chatId : undefined;
     if (!currentChatId) {
       // Create new chat with first user message
       const firstUserMessage = messages.find((m) => m.role === 'user');

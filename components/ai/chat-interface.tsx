@@ -134,7 +134,7 @@ export function ChatInterface({
       },
       {
         body: {
-          chatId: chatId,
+          ...(chatId && { chatId }),
           model: model,
           webSearch: webSearch,
         },
@@ -148,7 +148,7 @@ export function ChatInterface({
       { text: suggestion },
       {
         body: {
-          chatId: chatId,
+          ...(chatId && { chatId }),
           model: model,
           webSearch: webSearch,
         },
@@ -306,62 +306,64 @@ export function ChatInterface({
         </div>
       )}
 
-      <PromptInput
-        onSubmit={handleSubmit}
-        className="border-t"
-        globalDrop
-        multiple
-      >
-        <PromptInputHeader>
-          <PromptInputAttachments>
-            {(attachment) => <PromptInputAttachment data={attachment} />}
-          </PromptInputAttachments>
-        </PromptInputHeader>
-        <PromptInputBody>
-          <PromptInputTextarea
-            onChange={(e) => setInput(e.target.value)}
-            value={input}
-          />
-        </PromptInputBody>
-        <PromptInputFooter>
-          <PromptInputTools>
-            <PromptInputActionMenu>
-              <PromptInputActionMenuTrigger />
-              <PromptInputActionMenuContent>
-                <PromptInputActionAddAttachments />
-              </PromptInputActionMenuContent>
-            </PromptInputActionMenu>
-            <PromptInputButton
-              variant={webSearch ? 'default' : 'ghost'}
-              onClick={() => setWebSearch(!webSearch)}
-            >
-              <GlobeIcon size={16} />
-              <span>Search</span>
-            </PromptInputButton>
-            <PromptInputSelect
-              onValueChange={(value) => {
-                setModel(value);
-              }}
-              value={model}
-            >
-              <PromptInputSelectTrigger>
-                <PromptInputSelectValue />
-              </PromptInputSelectTrigger>
-              <PromptInputSelectContent>
-                {models.map((m) => (
-                  <PromptInputSelectItem key={m.value} value={m.value}>
-                    {m.name}
-                  </PromptInputSelectItem>
-                ))}
-              </PromptInputSelectContent>
-            </PromptInputSelect>
-          </PromptInputTools>
-          <PromptInputSubmit
-            disabled={(!input.trim() && status !== 'streaming') || status === 'submitted'}
-            status={status}
-          />
-        </PromptInputFooter>
-      </PromptInput>
+      <div className='border-t'>
+        <PromptInput
+          onSubmit={handleSubmit}
+          className="p-3"
+          globalDrop
+          multiple
+        >
+          <PromptInputHeader>
+            <PromptInputAttachments>
+              {(attachment) => <PromptInputAttachment data={attachment} />}
+            </PromptInputAttachments>
+          </PromptInputHeader>
+          <PromptInputBody>
+            <PromptInputTextarea
+              onChange={(e) => setInput(e.target.value)}
+              value={input}
+            />
+          </PromptInputBody>
+          <PromptInputFooter>
+            <PromptInputTools>
+              <PromptInputActionMenu>
+                <PromptInputActionMenuTrigger />
+                <PromptInputActionMenuContent>
+                  <PromptInputActionAddAttachments />
+                </PromptInputActionMenuContent>
+              </PromptInputActionMenu>
+              <PromptInputButton
+                variant={webSearch ? 'default' : 'ghost'}
+                onClick={() => setWebSearch(!webSearch)}
+              >
+                <GlobeIcon size={16} />
+                <span>Search</span>
+              </PromptInputButton>
+              <PromptInputSelect
+                onValueChange={(value) => {
+                  setModel(value);
+                }}
+                value={model}
+              >
+                <PromptInputSelectTrigger>
+                  <PromptInputSelectValue />
+                </PromptInputSelectTrigger>
+                <PromptInputSelectContent>
+                  {models.map((m) => (
+                    <PromptInputSelectItem key={m.value} value={m.value}>
+                      {m.name}
+                    </PromptInputSelectItem>
+                  ))}
+                </PromptInputSelectContent>
+              </PromptInputSelect>
+            </PromptInputTools>
+            <PromptInputSubmit
+              disabled={(!input.trim() && status !== 'streaming') || status === 'submitted'}
+              status={status}
+            />
+          </PromptInputFooter>
+        </PromptInput>
+      </div>
     </div>
   );
 }

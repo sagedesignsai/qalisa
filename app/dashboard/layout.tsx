@@ -25,7 +25,7 @@ export default function DashboardLayout({
       <SidebarInset>
         <SiteHeader />
         <div className="flex flex-1 flex-col overflow-auto">
-          <div className="@container/main flex flex-1 flex-col p-4 md:p-6 lg:p-8">
+          <div className="@container/main flex flex-1 flex-col p-0">
             {children}
           </div>
         </div>

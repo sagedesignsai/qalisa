@@ -8,7 +8,7 @@ import { ChatPageClient } from './chat-page-client';
 export default async function AIPage({
   searchParams,
 }: {
-  searchParams: Promise<{ chatId?: string }>;
+  searchParams: Promise<{ chatId?: string; projectId?: string }>;
 }) {
   const session = await auth();
   if (!session?.user?.id) {
@@ -18,6 +18,7 @@ export default async function AIPage({
   const userId = session.user.id;
   const params = await searchParams;
   const chatId = params.chatId;
+  const projectId = params.projectId;
 
   let initialMessages: typeof import('ai').UIMessage[] = [];
   let chatTitle = 'New Chat';
@@ -45,6 +46,7 @@ export default async function AIPage({
         id: chat.id,
         title: chat.title || 'Untitled Chat',
       }))}
+      projectId={projectId}
     />
   );
 }

@@ -69,3 +69,93 @@ export const MessageRole = {
 } as const
 
 export type MessageRole = (typeof MessageRole)[keyof typeof MessageRole]
+
+
+export const StudioProjectType = {
+  PRESENTATION_VIDEO: 'PRESENTATION_VIDEO',
+  INFOGRAPHIC: 'INFOGRAPHIC',
+  SLIDE_DECK: 'SLIDE_DECK',
+  DOCUMENT: 'DOCUMENT'
+} as const
+
+export type StudioProjectType = (typeof StudioProjectType)[keyof typeof StudioProjectType]
+
+
+export const StudioProjectStatus = {
+  DRAFT: 'DRAFT',
+  GENERATING: 'GENERATING',
+  READY: 'READY',
+  EXPORTING: 'EXPORTING',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED'
+} as const
+
+export type StudioProjectStatus = (typeof StudioProjectStatus)[keyof typeof StudioProjectStatus]
+
+
+export const MediaAssetType = {
+  IMAGE: 'IMAGE',
+  AUDIO: 'AUDIO',
+  VIDEO: 'VIDEO',
+  MUSIC: 'MUSIC'
+} as const
+
+export type MediaAssetType = (typeof MediaAssetType)[keyof typeof MediaAssetType]
+
+
+export const TrackType = {
+  VIDEO: 'VIDEO',
+  AUDIO: 'AUDIO',
+  MUSIC: 'MUSIC',
+  TEXT_OVERLAY: 'TEXT_OVERLAY',
+  TRANSITION: 'TRANSITION'
+} as const
+
+export type TrackType = (typeof TrackType)[keyof typeof TrackType]
+
+
+export const ExportFormat = {
+  MP4: 'MP4',
+  WEBM: 'WEBM',
+  PNG: 'PNG',
+  PDF: 'PDF',
+  HTML: 'HTML'
+} as const
+
+export type ExportFormat = (typeof ExportFormat)[keyof typeof ExportFormat]
+
+
+export const ExportStatus = {
+  PENDING: 'PENDING',
+  PROCESSING: 'PROCESSING',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED'
+} as const
+
+export type ExportStatus = (typeof ExportStatus)[keyof typeof ExportStatus]
+
+
+export const ContentItemType = {
+  VIDEO_OVERVIEW: 'VIDEO_OVERVIEW',
+  INFOGRAPHIC: 'INFOGRAPHIC',
+  SLIDE_DECK: 'SLIDE_DECK',
+  AUDIO_OVERVIEW: 'AUDIO_OVERVIEW',
+  MIND_MAP: 'MIND_MAP',
+  REPORT: 'REPORT',
+  FLASHCARDS: 'FLASHCARDS',
+  QUIZ: 'QUIZ'
+} as const
+
+export type ContentItemType = (typeof ContentItemType)[keyof typeof ContentItemType]
+
+
+export const ContentItemStatus = {
+  DRAFT: 'DRAFT',
+  GENERATING: 'GENERATING',
+  READY: 'READY',
+  EXPORTING: 'EXPORTING',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED'
+} as const
+
+export type ContentItemStatus = (typeof ContentItemStatus)[keyof typeof ContentItemStatus]

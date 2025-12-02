@@ -1,7 +1,11 @@
 'use client';
 
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ChatInterface } from '@/components/ai/chat-interface';
+import { StudioPanel } from '@/components/studio/studio-panel';
+import { Button } from '@/components/ui/button';
+import { PanelRightOpenIcon, PanelRightCloseIcon } from 'lucide-react';
 import type { UIMessage } from 'ai';
 
 interface ChatPageClientProps {
@@ -9,6 +13,7 @@ interface ChatPageClientProps {
   chatTitle: string;
   initialMessages: UIMessage[];
   recentChats: Array<{ id: string; title: string }>;
+  projectId?: string;
 }
 
 export function ChatPageClient({
@@ -16,8 +21,10 @@ export function ChatPageClient({
   chatTitle,
   initialMessages,
   recentChats,
+  projectId,
 }: ChatPageClientProps) {
   const router = useRouter();
+  const [showStudio, setShowStudio] = useState(false);
 
   const handleChatIdChange = (newChatId: string) => {
     router.push(`/ai?chatId=${newChatId}`);
@@ -56,15 +63,33 @@ export function ChatPageClient({
 
       {/* Main Chat Area */}
       <div className="flex-1 flex flex-col">
-        <div className="border-b p-4">
+        <div className="border-b p-4 flex items-center justify-between">
           <h1 className="text-xl font-semibold">{chatTitle}</h1>
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => setShowStudio(!showStudio)}
+          >
+            {showStudio ? (
+              <PanelRightCloseIcon className="h-4 w-4" />
+            ) : (
+              <PanelRightOpenIcon className="h-4 w-4" />
+            )}
+          </Button>
         </div>
-        <div className="flex-1">
-          <ChatInterface
-            chatId={chatId}
-            initialMessages={initialMessages}
-            onChatIdChange={handleChatIdChange}
-          />
+        <div className="flex-1 flex">
+          <div className={`flex-1 flex flex-col ${showStudio ? 'border-r' : ''}`}>
+            <ChatInterface
+              chatId={chatId}
+              initialMessages={initialMessages}
+              onChatIdChange={handleChatIdChange}
+            />
+          </div>
+          {showStudio && (
+            <div className="w-1/2">
+              <StudioPanel chatId={chatId} projectId={projectId} />
+            </div>
+          )}
         </div>
       </div>
     </div>

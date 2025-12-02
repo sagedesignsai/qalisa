@@ -23,11 +23,12 @@ model User {
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
 
-  accounts      Account[]
-  sessions      Session[]
-  chats         Chat[]
-  subscriptions UserSubscription[]
-  payments      Payment[]
+  accounts       Account[]
+  sessions       Session[]
+  chats          Chat[]
+  subscriptions  UserSubscription[]
+  payments       Payment[]
+  studioProjects StudioProject[]
 
   @@map("users")
 }
@@ -104,19 +105,19 @@ enum SubscriptionStatus {
 
 // Payment & Subscription Models
 model UserSubscription {
-  id                String            @id @default(cuid())
-  userId            String
-  user              User              @relation(fields: [userId], references: [id], onDelete: Cascade)
-  plan              Subscription
-  status            SubscriptionStatus @default(PENDING)
-  payfastToken      String?           @unique // PayFast subscription token
-  payfastProfileId  String?           @unique // PayFast subscription profile ID
+  id                 String             @id @default(cuid())
+  userId             String
+  user               User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  plan               Subscription
+  status             SubscriptionStatus @default(PENDING)
+  payfastToken       String?            @unique // PayFast subscription token
+  payfastProfileId   String?            @unique // PayFast subscription profile ID
   currentPeriodStart DateTime?
   currentPeriodEnd   DateTime?
-  cancelAtPeriodEnd  Boolean          @default(false)
+  cancelAtPeriodEnd  Boolean            @default(false)
   cancelledAt        DateTime?
-  createdAt          DateTime         @default(now())
-  updatedAt          DateTime         @updatedAt
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
 
   payments Payment[]
 
@@ -127,21 +128,21 @@ model UserSubscription {
 }
 
 model Payment {
-  id                String        @id @default(cuid())
+  id                String            @id @default(cuid())
   userId            String
-  user              User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   subscriptionId    String?
   subscription      UserSubscription? @relation(fields: [subscriptionId], references: [id], onDelete: SetNull)
-  amount            Float         // Amount in ZAR (cents)
-  currency          String        @default("ZAR")
-  status            PaymentStatus @default(PENDING)
+  amount            Float // Amount in ZAR (cents)
+  currency          String            @default("ZAR")
+  status            PaymentStatus     @default(PENDING)
   paymentMethod     PaymentMethod
-  payfastPaymentId  String?       @unique // PayFast payment ID
-  payfastMerchantId String?       // PayFast merchant order ID
+  payfastPaymentId  String?           @unique // PayFast payment ID
+  payfastMerchantId String? // PayFast merchant order ID
   description       String?
-  metadata          Json?         // Additional payment data
-  createdAt         DateTime      @default(now())
-  updatedAt         DateTime      @updatedAt
+  metadata          Json? // Additional payment data
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
 
   transactions Transaction[]
 
@@ -153,16 +154,16 @@ model Payment {
 }
 
 model Transaction {
-  id            String   @id @default(cuid())
-  paymentId     String
-  payment       Payment  @relation(fields: [paymentId], references: [id], onDelete: Cascade)
-  type          String   // payment, refund, subscription_update, etc.
-  amount        Float    // Amount in ZAR (cents)
-  currency      String   @default("ZAR")
-  status        String   // success, failed, pending
-  payfastData   Json?    // Raw PayFast webhook data
-  description   String?
-  createdAt     DateTime @default(now())
+  id          String   @id @default(cuid())
+  paymentId   String
+  payment     Payment  @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+  type        String // payment, refund, subscription_update, etc.
+  amount      Float // Amount in ZAR (cents)
+  currency    String   @default("ZAR")
+  status      String // success, failed, pending
+  payfastData Json? // Raw PayFast webhook data
+  description String?
+  createdAt   DateTime @default(now())
 
   @@index([paymentId])
   @@index([type])
@@ -182,7 +183,8 @@ model Chat {
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
 
-  messages Message[]
+  messages       Message[]
+  studioProjects StudioProject[]
 
   @@index([userId, createdAt])
   @@index([userId, status])
@@ -215,4 +217,227 @@ enum MessageRole {
   ASSISTANT
   SYSTEM
   TOOL
+}
+
+// Studio Projects
+model StudioProject {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Optional reference to existing Chat
+  chatId String?
+  chat   Chat?   @relation(fields: [chatId], references: [id], onDelete: SetNull)
+
+  // Embedded chat data (for Studio context)
+  messages ProjectMessage[]
+
+  // Project metadata
+  type        StudioProjectType // Legacy field, kept for backward compatibility
+  title       String
+  description String?
+  status      StudioProjectStatus @default(DRAFT)
+  metadata    Json? // Legacy field, kept for backward compatibility
+  settings    Json? // Settings, options, preferences (new field)
+
+  // Sources extracted from messages
+  sources ProjectSource[]
+
+  // Generated content (can have multiple types)
+  contentItems StudioContentItem[]
+
+  // Legacy media assets (for backward compatibility)
+  mediaAssets MediaAsset[]
+  videoTracks VideoTrack[]
+  exports     ProjectExport[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId, createdAt])
+  @@index([chatId])
+  @@map("studio_projects")
+}
+
+enum StudioProjectType {
+  PRESENTATION_VIDEO
+  INFOGRAPHIC
+  SLIDE_DECK
+  DOCUMENT
+}
+
+enum StudioProjectStatus {
+  DRAFT
+  GENERATING
+  READY
+  EXPORTING
+  COMPLETED
+  FAILED
+}
+
+// Media Assets (images, audio, video)
+model MediaAsset {
+  id            String             @id @default(cuid())
+  projectId     String
+  project       StudioProject      @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  contentItemId String?
+  contentItem   StudioContentItem? @relation(fields: [contentItemId], references: [id], onDelete: SetNull)
+  type          MediaAssetType
+  appwriteId    String // Appwrite file ID
+  url           String // Public URL
+  mimeType      String
+  size          Int // Bytes
+  duration      Float? // For audio/video (seconds)
+  width         Int? // For images/video
+  height        Int? // For images/video
+  metadata      Json? // Generation params, source info
+  createdAt     DateTime           @default(now())
+
+  videoTracks VideoTrack[]
+
+  @@index([projectId])
+  @@index([contentItemId])
+  @@map("media_assets")
+}
+
+enum MediaAssetType {
+  IMAGE
+  AUDIO
+  VIDEO
+  MUSIC
+}
+
+// Video Tracks (for timeline editing)
+model VideoTrack {
+  id        String        @id @default(cuid())
+  projectId String
+  project   StudioProject @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  assetId   String?
+  asset     MediaAsset?   @relation(fields: [assetId], references: [id], onDelete: SetNull)
+  type      TrackType
+  startTime Float // Start time in seconds
+  endTime   Float // End time in seconds
+  volume    Float         @default(1.0) // 0.0 to 1.0
+  order     Int // Display order
+  metadata  Json? // Track-specific settings (transitions, effects)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  @@index([projectId, order])
+  @@map("video_tracks")
+}
+
+enum TrackType {
+  VIDEO
+  AUDIO
+  MUSIC
+  TEXT_OVERLAY
+  TRANSITION
+}
+
+// Project Exports
+model ProjectExport {
+  id          String        @id @default(cuid())
+  projectId   String
+  project     StudioProject @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  format      ExportFormat
+  quality     String // e.g., "1080p", "720p"
+  appwriteId  String? // Appwrite file ID
+  url         String? // Public URL
+  status      ExportStatus  @default(PENDING)
+  progress    Float         @default(0.0) // 0.0 to 1.0
+  error       String?
+  metadata    Json?
+  createdAt   DateTime      @default(now())
+  completedAt DateTime?
+
+  @@index([projectId])
+  @@index([status])
+  @@map("project_exports")
+}
+
+enum ExportFormat {
+  MP4
+  WEBM
+  PNG
+  PDF
+  HTML
+}
+
+enum ExportStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+// Project Messages (embedded chat data)
+model ProjectMessage {
+  id         String        @id @default(cuid())
+  projectId  String
+  project    StudioProject @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  role       MessageRole
+  content    Json // Stores UIMessage parts array
+  metadata   Json? // Reasoning tokens, sources, tool calls, etc.
+  sequence   Int // Message order
+  isComplete Boolean       @default(false)
+  createdAt  DateTime      @default(now())
+
+  @@index([projectId, sequence])
+  @@map("project_messages")
+}
+
+// Project Sources (extracted from messages)
+model ProjectSource {
+  id          String        @id @default(cuid())
+  projectId   String
+  project     StudioProject @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  url         String
+  title       String?
+  extractedAt DateTime      @default(now())
+
+  @@unique([projectId, url])
+  @@index([projectId])
+  @@map("project_sources")
+}
+
+// Studio Content Items (generated content)
+model StudioContentItem {
+  id        String            @id @default(cuid())
+  projectId String
+  project   StudioProject     @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  type      ContentItemType
+  title     String
+  status    ContentItemStatus @default(DRAFT)
+  metadata  Json? // Content-specific settings
+  data      Json? // Generated content data
+
+  // Links to media assets if applicable
+  mediaAssets MediaAsset[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([projectId, type])
+  @@map("studio_content_items")
+}
+
+enum ContentItemType {
+  VIDEO_OVERVIEW
+  INFOGRAPHIC
+  SLIDE_DECK
+  AUDIO_OVERVIEW
+  MIND_MAP
+  REPORT
+  FLASHCARDS
+  QUIZ
+}
+
+enum ContentItemStatus {
+  DRAFT
+  GENERATING
+  READY
+  EXPORTING
+  COMPLETED
+  FAILED
 }
